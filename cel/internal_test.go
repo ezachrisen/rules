@@ -11,6 +11,7 @@ import (
 
 // Test converting between CEL and Indigo types, and whether expected
 // type matches work.
+//
 //revive:disable
 func TestTypeConversion(t *testing.T) {
 
@@ -234,7 +235,7 @@ func TestNils(t *testing.T) {
 	_, err = indigoType(nil)
 	is.True(err != nil)
 
-	_, err = convertIndigoSchemaToDeclarations(indigo.Schema{})
+	_, err = ConvertIndigoSchemaToDeclarations(indigo.Schema{})
 	is.NoErr(err)
 
 	_, err = convertIndigoToExprType(nil)

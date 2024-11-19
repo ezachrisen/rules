@@ -83,6 +83,7 @@ type Int struct{}
 type Float struct{}
 
 // Any defines an Indigo type for an "undefined" or unspecified type.
+// Any can be used only as a return type.
 type Any struct{}
 
 // Bool defines an Indigo type for true/false.

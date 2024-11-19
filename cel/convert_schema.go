@@ -16,9 +16,9 @@ import (
 	gexpr "google.golang.org/genproto/googleapis/api/expr/v1alpha1"
 )
 
-// convertIndigoSchemaToDeclarations converts an Indigo Schema to a list of CEL "EnvOption".
+// ConvertIndigoSchemaToDeclarations converts an Indigo Schema to a list of CEL "EnvOption".
 // Entries in this list are types that CEL know about (i.e., the schema).
-func convertIndigoSchemaToDeclarations(s indigo.Schema) ([]celgo.EnvOption, error) {
+func ConvertIndigoSchemaToDeclarations(s indigo.Schema) ([]celgo.EnvOption, error) {
 
 	// declarations are what CEL calls types in their schema
 	declarations := []*gexpr.Decl{}

@@ -51,6 +51,15 @@ func FixedSchema(schema *indigo.Schema) CelOption {
 	}
 }
 
+// WithFixedEnv mandates that the evaluator will use this CEL environment.
+// Doing so, we could access some features from CEL, directly, like adding
+// the extension functions, or allowing the user to add their own functions.
+func WithFixedEnv(env *celgo.Env) CelOption {
+	return func(e *Evaluator) {
+		e.fixedEnv = env
+	}
+}
+
 // Compile checks a rule, prepares a compiled CELProgram, and stores the program
 // in rule.Program. CELProgram contains the compiled program used to evaluate the rules,
 // and if we're collecting diagnostics, CELProgram also contains the CEL AST to provide
@@ -68,7 +77,7 @@ func (e *Evaluator) Compile(expr string, s indigo.Schema, resultType indigo.Type
 	var err error
 
 	e.fixedOnce.Do(func() {
-		if e.fixedSchema == nil {
+		if e.fixedSchema == nil || e.fixedEnv != nil {
 			return
 		}
 		env, errx := celEnv(*e.fixedSchema)
@@ -77,7 +86,6 @@ func (e *Evaluator) Compile(expr string, s indigo.Schema, resultType indigo.Type
 			return
 		}
 		e.fixedEnv = env
-		return
 	})
 
 	if err != nil {
@@ -133,7 +141,7 @@ func (e *Evaluator) Compile(expr string, s indigo.Schema, resultType indigo.Type
 
 func celEnv(schema indigo.Schema) (*celgo.Env, error) {
 
-	opts, err := convertIndigoSchemaToDeclarations(schema)
+	opts, err := ConvertIndigoSchemaToDeclarations(schema)
 	if err != nil {
 		return nil, err
 	}
